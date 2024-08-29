@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.jfrog.bintray'
+// apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
 apply from: '../../../../fat-aar.gradle'
 
@@ -102,27 +102,28 @@ publishing {
 
     repositories {
         mavenLocal()
+        mavenCentral()
     }
 }
 
-bintray {
-    user = System.getenv('BINTRAY_USER') ?: ""
-    key = System.getenv('BINTRAY_API_KEY') ?: ""
-
-    publications = ['anko']
-
-    dryRun = BINTRAY_DRY_RUN
-
-    pkg {
-        userOrg = BINTRAY_USER_NAME
-        repo = BINTRAY_REPO_NAME
-        name = BINTRAY_PACKAGE_NAME
-        licenses = ['Apache-2.0']
-        vcsUrl = SCM_URL
-
-        version {
-            name = ANKO_VERSION
-            released = new Date()
-        }
-    }
-}
+// bintray {
+//     user = System.getenv('BINTRAY_USER') ?: ""
+//     key = System.getenv('BINTRAY_API_KEY') ?: ""
+//
+//     publications = ['anko']
+//
+//     dryRun = BINTRAY_DRY_RUN
+//
+//     pkg {
+//         userOrg = BINTRAY_USER_NAME
+//         repo = BINTRAY_REPO_NAME
+//         name = BINTRAY_PACKAGE_NAME
+//         licenses = ['Apache-2.0']
+//         vcsUrl = SCM_URL
+//
+//         version {
+//             name = ANKO_VERSION
+//             released = new Date()
+//         }
+//     }
+// }

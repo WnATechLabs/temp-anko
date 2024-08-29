@@ -32,15 +32,18 @@ buildscript {
     repositories {
         mavenCentral()
         jcenter()
-        maven { url "http://dl.bintray.com/kotlin/kotlin-eap-1.1" }
+        maven { url 'https://jitpack.io' }
+        // maven { url "http://dl.bintray.com/kotlin/kotlin-eap-1.1" }
     }
 
     dependencies {
         classpath "com.android.tools.build:gradle:2.1.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7'
-        classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.11"
+        classpath "org.jetbrains.kotlinx:kotlinx-coroutines-android:0.19"
+        // classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
+        classpath files('libs/shadow.jar')
+        // classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7'
+        // classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.11"
     }
 }
 
@@ -49,27 +52,28 @@ allprojects {
         mavenCentral()
         jcenter()
         maven { url "https://dl.google.com/dl/android/maven2" }
-        maven { url "http://dl.bintray.com/kotlin/kotlinx.dom" }
-        maven { url "http://dl.bintray.com/kotlin/kotlin-eap-1.1" }
+        maven { url 'https://jitpack.io' }
+        // maven { url "http://dl.bintray.com/kotlin/kotlinx.dom" }
+        // maven { url "http://dl.bintray.com/kotlin/kotlin-eap-1.1" }
     }
 }
 
-task zipIdeaPlugin(dependsOn: ':ide:preview:shadowJar') << {
-    File outputFile = new File("build/anko-ide-plugin.zip")
-    ZipOutputStream zipOutputStream = null
-
-    try {
-        zipOutputStream = new ZipOutputStream(new FileOutputStream(outputFile))
-        ZipEntry jar = new ZipEntry("Anko/lib/anko-ide-plugin.jar")
-        zipOutputStream.putNextEntry(jar)
-
-        zipOutputStream << new FileInputStream("anko/idea-plugin/preview/build/libs/preview-all.jar")
-    } finally {
-        if (zipOutputStream != null) {
-            zipOutputStream.close()
-        }
-    }
-}
+// task zipIdeaPlugin(dependsOn: ':ide:preview:shadowJar') << {
+//     File outputFile = new File("build/anko-ide-plugin.zip")
+//     ZipOutputStream zipOutputStream = null
+//
+//     try {
+//         zipOutputStream = new ZipOutputStream(new FileOutputStream(outputFile))
+//         ZipEntry jar = new ZipEntry("Anko/lib/anko-ide-plugin.jar")
+//         zipOutputStream.putNextEntry(jar)
+//
+//         zipOutputStream << new FileInputStream("anko/idea-plugin/preview/build/libs/preview-all.jar")
+//     } finally {
+//         if (zipOutputStream != null) {
+//             zipOutputStream.close()
+//         }
+//     }
+// }
 
 def generatedArtifacts = [
     ':generated:anko-appcompat-v7',
@@ -127,6 +131,6 @@ afterEvaluate {
     project.tasks.publishLocal.dependsOn(commonBuildTasks)
 
     project.tasks.dist.dependsOn(generatedArtifacts.collect { it + ":assembleRelease" })
-    project.tasks.publish.dependsOn(generatedArtifacts.collect { it + ":bintrayUpload" })
+    // project.tasks.publish.dependsOn(generatedArtifacts.collect { it + ":bintrayUpload" })
     project.tasks.publishLocal.dependsOn(generatedArtifacts.collect { it + ":publish" })
 }
